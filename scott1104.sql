@@ -40,3 +40,21 @@ hiredate, SAL AS SALARY, COMM AS COMMISIION, DEPTNO AS DEPARTMENT_NO from emp OR
 SELECT * FROM emp WHERE empno = 7499 AND deptno = 30;
 SELECT * from emp WHERE deptno = 30 OR job = 'CLERK';
 SELECT * FROM emp WHERE deptno = 20 OR job = 'salesman';
+
+-- IN을 사용해서 부서번호가 10,20번인 사원정보 조회
+SELECT * FROM emp WHERE deptno IN(10, 20);
+
+
+
+-- BETWEEN A AND B (사이에)
+-- 1)급여가 2000이상 3000이하인 사원정보 조회
+SELECT * FROM emp WHERE sal >= 2000 AND sal<=3000;
+
+SELECT *
+FROM emp
+WHERE sal BETWEEN 2000 AND 3000;
+
+-- 2) 급여가 2000이상 3000 이하가 아닌 사원정보 조회(NOT BETWEEN)
+SELECT *
+FROM emp
+WHERE sal NOT BETWEEN 2000 AND 3000;
