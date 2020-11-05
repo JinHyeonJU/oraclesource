@@ -148,4 +148,26 @@ SELECT INSTR('HELLO, ORACLE!', 'L') AS INSTR_1,
        FROM dual;
        
 -- 3) 문자열 함수 : REPLACE(찾아서 바꾸기), 원본수정X 화면출력만변경
- 
+-- REPLACE('변경하고싶은 단어가 포함된 문장', '변경하고싶은 단어', '변경할 단어')
+SELECT REPLACE('이것이 oracle이다', '이것이', 'THIS IS')
+FROM dual;
+-- 변경할 단어가 없으면 사라진다.
+SELECT '010-1234-5678' AS REPLACE_BEFORE,
+REPLACE('010-1234-5678', '-', ' ') AS REPLACE_1,
+REPLACE('010-1234-5678', '-') AS REPLACE_2
+FROM dual;
+
+-- 4) 문자열 함수 : CONCAT(문자열 연결)
+-- empno, ename을 연결하여 조회
+SELECT CONCAT(empno, ename), CONCAT(empno, CONCAT(':', ename))
+FROM emp
+WHERE ename='SCOTT';
+
+-- 4.1) || : 연결의 의미로 사용됨
+SELECT empno || ename, empno || ':' || ename
+FROM emp
+WHERE ename='SCOTT';
+
+-- 5) 문자열 함수 : TRIM(공백 제거), LTRIM(왼쪽공백제거), RTRIM(오른쪽공백제거)
+SELECT '    이것이     ', TRIM('     이것이    '), LTRIM('     이것이    '), RTRIM('     이것이    ')
+FROM emp;
