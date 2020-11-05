@@ -115,3 +115,17 @@ SELECT deptno, ename, sal, empno FROM emp WHERE deptno = 10;
 SELECT deptno, ename, sal, empno FROM emp WHERE sal>2000 AND deptno=20
 UNION
 SELECT deptno, ename, sal, empno FROM emp WHERE sal>2000 AND deptno=30;
+
+
+-- 오라클 함수 (클래스가 없어도 됨)
+-- 1) 문자함수 : UPPER(대문자), LOWER(소문자), INITCAP(첫단어 대문자)
+--              LENGTH, LENGTHB
+-- ename 을 UPPER, LOWER, INITCAP으로 변경하여 조회
+SELECT ename, UPPER(ename), LOWER(ename), INITCAP(ename)
+FROM emp;
+
+-- DUAL 테이블 이용(SYS가 갖고있는 테이블, 임시연산이나 함수의 결과값을
+-- 확인하는 용도)
+-- LENGTHB : 바이트
+-- LENGTH : 글자
+SELECT LENGTH('웅뇽뇽뇽'), LENGTHB('웅뇽뇽뇽') FROM DUAL;
