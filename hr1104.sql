@@ -77,3 +77,52 @@ ORDER BY hire_date;
 SELECT last_name, salary
 FROM employees
 WHERE salary NOT BETWEEN 5000 AND 12000;
+
+
+-- LIKE
+-- 1) 2004년도에 고용된 모든 사람들의 LAST_NAME 및 고용일을 조회하여 입사일 기준으로
+--오름차순 정렬하여 출력
+SELECT last_name, hire_date
+FROM employees
+WHERE hire_date LIKE '04%' ORDER BY hire_date;
+
+
+-- 2)LAST_NAME 에 u가 포함되는 사람들의 사번 및 last_name 조회
+SELECT last_name, employee_id
+FROM employees
+WHERE last_name LIKE '%u%';
+
+
+-- 3) last_name 에 a혹은 e글자가 있는 사원들의 last_name 을 조회하여 last_name
+-- 오름차순 정렬
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%' OR last_name LIKE '%e%'
+ORDER BY last_name;
+
+
+
+--4) last_name 에 a와  e글자가 있는 사원들의 last_name 을 조회하여 last_name
+-- 오름차순 정렬
+SELECT last_name
+FROM employees
+WHERE last_name LIKE '%a%' AND last_name LIKE '%e%' ORDER BY last_name;
+
+
+-- IS NULL 연습
+-- 1)매니저가 없는 사람들의 LAST_NAME, JOB_ID 조회
+SELECT last_name, job_id
+FROM employees
+WHERE manager_id IS NULL;
+
+-- 2) ST_CLERK인 JOB_ID를 가진 사원이 없는 부서ID 조회. 부서 번호가 NULL인 값 제외
+SELECT DISTINCT department_id
+FROM employees
+WHERE JOB_ID NOT IN ('st_clerk') AND department_id IS NOT NULL;
+
+
+--3)COMMISSION_PCT가 NULL이 아닌 사원들 중에서  COMMISSION =SALARY * COMMISSION_PCT
+--를 구하여 EMPLOYEE_ID, FIRST_NAME,JOB_ID 를 조회
+SELECT employee_id, first_name, job_id, salary * commission_pct AS commission
+FROM employees
+WHERE commission_pct IS NOT NULL;
