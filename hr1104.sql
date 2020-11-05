@@ -126,3 +126,30 @@ WHERE JOB_ID NOT IN ('st_clerk') AND department_id IS NOT NULL;
 SELECT employee_id, first_name, job_id, salary * commission_pct AS commission
 FROM employees
 WHERE commission_pct IS NOT NULL;
+
+
+
+
+-- [실습]문자열 함수
+-- 1) first_name이 Curtis 인 사람의 first_name, last_name, email, phone_number,
+--     job_id를 조회한다. 단, job_id의 결과는 소문자로 출력
+SELECT first_name, last_name, email, phone_number, LOWER(job_id)
+FROM employees
+WHERE first_name = 'Curtis';
+
+-- 2) 부서번호가 70,80,90인 사람들의 employee_id, first_name, hire_date,job_id를
+--    조회한다. 단, job_id가 it_prog인 사원의 경우 프로그래머로 변경하여 출력.
+SELECT employee_id, first_name, hire_date, REPLACE(job_id, 'IT_PROG', '프로그래머') AS job_id
+FROM employees
+WHERE department_id IN(60,70,80,90);
+
+-- 3) job_id가 ad_pres, pu_clerk인 사원들의 employee_id, first_name,last_name,
+--   department_id, job_id를 조회하시오. 단, 사원명은 first_namd과 last_name을 연결
+--    하여 출력한다.
+SELECT employee_id, department_id, job_id, CONCAT(first_name, CONCAT(' ', last_name)) AS FullName
+FROM employees
+WHERE job_id IN('AD_PRES', 'PU_CLERK');
+
+SELECT employee_id, department_id, job_id, first_name || ' ' || last_name AS FullName
+FROM employees
+WHERE job_id IN('AD_PRES', 'PU_CLERK');

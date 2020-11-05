@@ -169,5 +169,50 @@ FROM emp
 WHERE ename='SCOTT';
 
 -- 5) 문자열 함수 : TRIM(공백 제거), LTRIM(왼쪽공백제거), RTRIM(오른쪽공백제거)
-SELECT '    이것이     ', TRIM('     이것이    '), LTRIM('     이것이    '), RTRIM('     이것이    ')
-FROM emp;
+--                  사용할때: 웹에서 이름작성시 ' '홍길동일시 공백없애기위해.
+SELECT '    이것이     ', TRIM('     이것이        '), LTRIM('     이것이    '), RTRIM('     이것이    ')
+FROM dual;
+
+-- 6) 문자열 함수 : REVERSE(거꾸로 출력)
+SELECT REVERSE('Oracle') FROM dual;
+
+
+-- 1) 숫자 함수 : ROUND(반올림), TRUNC(버림), CEIL(입력된 숫자와 가까운 큰 정수)
+-- FLOOR(입력된 숫자와 가까운 작은 정수), MOD(나머지)
+
+SELECT ROUND(1324.5678) AS ROUND,
+       ROUND(1324.5678, 0) AS ROUND_1,
+       ROUND(1324.5678, 1) AS ROUND_2,
+       ROUND(1324.5678,-1) AS ROUND_MINUS,
+       ROUND(1324.5678,-2) AS ROUND_MINUS2
+FROM dual;
+
+SELECT TRUNC(1324.5678) AS TRUNC,
+       TRUNC(1324.5678, 0) AS TRUNC_1,
+       TRUNC(1324.5678, 1) AS TRUNC_2,
+       TRUNC(1324.5678,-1) AS TRUNC_MINUS,
+       TRUNC(1324.5678,-2) AS TRUNC_MINUS2
+FROM dual;
+
+SELECT CEIL(3.14), FLOOR(3.14), CEIL(-3.14), FLOOR(-3.14)
+FROM dual;
+
+SELECT MOD(15,6), MOD(10,2), MOD(11,2) FROM dual;
+
+-- 3) 날짜 함수 1: SYSDATE, CURRENT_DATE, CURRENT_TIMESTAMP
+-- SYSDATE : 회원가입시 그 날 회원가입한것이라고 기입하며 많이사옹
+SELECT SYSDATE, CURRENT_DATE, CURRENT_TIMESTAMP FROM dual;
+
+--날짜데이터는 연산이 가능함 : EX) 날짜데이터 + 1, -1, 날짜데이터-날짜데이터
+-- 날짜데이터 + 날짜데이터는 안됨
+SELECT SYSDATE AS NOW, SYSDATE-1 AS YESTERDAY, SYSDATE +1 AS TOMORROW
+FROM dual;
+
+-- 날짜 함수 2: ADD_MONTHS (월 추가)
+-- ADD_MONTHS(SYSDATE, 3) SYSDATE에서 3개월을 추가한 날을 출력
+SELECT SYSDATE, ADD_MONTHS(SYSDATE, 3) FROM dual;
+
+
+
+
+
