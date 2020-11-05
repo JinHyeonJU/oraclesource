@@ -118,7 +118,7 @@ SELECT deptno, ename, sal, empno FROM emp WHERE sal>2000 AND deptno=30;
 
 
 -- 오라클 함수 (클래스가 없어도 됨)
--- 1) 문자함수 : UPPER(대문자), LOWER(소문자), INITCAP(첫단어 대문자)
+-- 1) 문자 함수 : UPPER(대문자), LOWER(소문자), INITCAP(첫단어 대문자)
 --              LENGTH, LENGTHB
 -- ename 을 UPPER, LOWER, INITCAP으로 변경하여 조회
 SELECT ename, UPPER(ename), LOWER(ename), INITCAP(ename)
@@ -129,3 +129,9 @@ FROM emp;
 -- LENGTHB : 바이트
 -- LENGTH : 글자
 SELECT LENGTH('웅뇽뇽뇽'), LENGTHB('웅뇽뇽뇽') FROM DUAL;
+
+-- 직책 이름이 6글자 이상인 사원들의 정보 추출
+SELECT * FROM emp WHERE LENGTH(job) >= 6;
+
+-- 문자열 함수 : SUBSTR(테이블, a, b) a번째 글자부터 b번째 글자 출력
+SELECT job, SUBSTR(job,1,2), SUBSTR(job,3,2), substr(job,5) FROM emp;
