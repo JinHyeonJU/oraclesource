@@ -157,7 +157,7 @@ REPLACE('010-1234-5678', '-', ' ') AS REPLACE_1,
 REPLACE('010-1234-5678', '-') AS REPLACE_2
 FROM dual;
 
--- 4) 문자열 함수 : CONCAT(문자열 연결)
+--★ 4) 문자열 함수 : CONCAT(문자열 연결)
 -- empno, ename을 연결하여 조회
 SELECT CONCAT(empno, ename), CONCAT(empno, CONCAT(':', ename))
 FROM emp
@@ -168,7 +168,7 @@ SELECT empno || ename, empno || ':' || ename
 FROM emp
 WHERE ename='SCOTT';
 
--- 5) 문자열 함수 : TRIM(공백 제거), LTRIM(왼쪽공백제거), RTRIM(오른쪽공백제거)
+--★ 5) 문자열 함수 : TRIM(공백 제거), LTRIM(왼쪽공백제거), RTRIM(오른쪽공백제거)
 --                  사용할때: 웹에서 이름작성시 ' '홍길동일시 공백없애기위해.
 SELECT '    이것이     ', TRIM('     이것이        '), LTRIM('     이것이    '), RTRIM('     이것이    ')
 FROM dual;
@@ -199,7 +199,7 @@ FROM dual;
 
 SELECT MOD(15,6), MOD(10,2), MOD(11,2) FROM dual;
 
--- 3) 날짜 함수 1: SYSDATE, CURRENT_DATE, CURRENT_TIMESTAMP
+--★ 3) 날짜 함수 1: SYSDATE, CURRENT_DATE, CURRENT_TIMESTAMP
 -- SYSDATE : 회원가입시 그 날 회원가입한것이라고 기입하며 많이사옹
 SELECT SYSDATE, CURRENT_DATE, CURRENT_TIMESTAMP FROM dual;
 
@@ -212,7 +212,83 @@ FROM dual;
 -- ADD_MONTHS(SYSDATE, 3) SYSDATE에서 3개월을 추가한 날을 출력
 SELECT SYSDATE, ADD_MONTHS(SYSDATE, 3) FROM dual;
 
+-- 입사 10주년이 되는 사원들 조회
+SELECT empno, ename, hiredate, ADD_MONTHS(hiredate, 120) FROM emp;
 
+-- 입사 38년 미만인 사원들 조회
+SELECT * FROM emp WHERE ADD_MONTHS(hiredate, 456)> SYSDATE;
 
+-- 날짜 함수 3: MONTHS_BETWEEN(두 날짜 사이의 차이 출력)
+SELECT * FROM emp WHERE MONTHS_BETWEEN(SYSDATE, HIREDATE) < 456;\
 
+SELECT empno, ename, hiredate, SYSDATE, MONTHS_BETWEEN(hiredate, SYSDATE) AS MONTHS1,
+MONTHS_BETWEEN(SYSDATE, hiredate) AS MONTHS2, TRUNC(MONTHS_BETWEEN(SYSDATE, hiredate)) AS TRUNC
+FROM emp;
 
+-- 날짜함수 4: NEXT_DAY, LAST_DAY(그 월의 마지막 date)
+SELECT SYSDATE, NEXT_DAY(SYSDATE, '월요일'), LAST_DAY(SYSDATE)
+FROM dual;
+
+-- ★형변환 함수 : TO_CHAR(날짜, 숫자데이터를 문자로 변환)
+--               TO_NUMBER(문자데이터를 숫자로 변환)
+--               TO_DATE(문자 데이터를 날짜로 변환)
+
+SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD') AS 현재날짜 FROM dual; --2020/11/05
+SELECT TO_CHAR(SYSDATE, 'MON') AS 현재날짜 FROM dual; --a월
+SELECT TO_CHAR(SYSDATE, 'DD') AS 현재날짜 FROM dual; 
+SELECT TO_CHAR(SYSDATE, 'MM') AS 현재날짜 FROM dual; 
+SELECT TO_CHAR(SYSDATE, 'DAY') AS 현재날짜 FROM dual; --요일
+SELECT TO_CHAR(SYSDATE, 'HH:MI:SS') AS 현재날짜 FROM dual; --시:분:초
+SELECT TO_CHAR(SYSDATE, 'HH12:MI:SS') AS 현재날짜 FROM dual;
+SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS') AS 현재날짜 FROM dual;
+SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS AM') AS 현재날짜 FROM dual;
+
+-- 오늘날짜를 년/월/일 16:51:45표현
+SELECT TO_CHAR(SYSDATE, 'YYYY/MM/DD   HH24:MI:SS') AS 현재날짜시간 FROM dual;
+
+SELECT 1300-TO_NUMBER('1500'), TO_NUMBER('1300')+1500 FROM dual;
+SELECT TO_NUMBER('1,300','999,999') - TO_NUMBER('1,500','999,999') FROM dual;
+
+SELECT TO_NUMBER('1,300','999,999') - TO_NUMBER('1,500','999,999') FROM dual;
+
+SELECT TO_DATE ('2020-11-05', 'YYYY/MM/DD') AS TODATE1,
+        TO_DATE ('20201105', 'YYYY-MM-DD') AS TODATE2 FROM dual;
+
+-- 1981년6월1일 이후에 입사한 사원정보 조회
+SELECT * FROM emp WHERE hiredate > '1981-06-01';
+-- 날짜데이터라고 인식시켜주기
+SELECT * FROM emp WHERE hiredate > TO_DATE('1981-06-01', 'YYYY//MM/DD');
+
+SELECT TO_DATE('2019-12-20')-TO_DATE('2019-10-20') FROM dual;
+
+-- NULL처리 함수 : NVL, NVL2
+SELECT empno, ename, sal, comm, sal+comm FROM emp;
+SELECT empno, ename, sal, comm, sal+comm, NVL(COMM,0), SAL+NVL(COMM,0)
+FROM emp;
+
+SELECT empno, ename, sal, comm, comm, NVL2(COMM,'O','X'), --NULL이 아니여도 지정
+SAL+NVL2(COMM,sal*12+comm, sal*12) AS annsal
+FROM emp;
+
+-- DECODE 함수와 CASE문
+-- job이 manager, salseman, analyst 경우에 각각의 다른 비율을 적용하고 싶다면?
+SELECT empno,ename,job,sal, DECODE(job,
+                                    'MANAGER',sal*1.1,
+                                    'SALSEMAN',sal*1.05,
+                                    'ANALYST',SAL,
+                                    SAL*1.03) AS UPSAL 
+FROM emp;
+
+SELECT empno,ename,job,sal, CASE JOB
+                            WHEN 'MANAGER' THEN SAL*1.1
+                            WHEN 'SALSEMAN' THEN SAL*1.05
+                            WHEN 'ANALYST' THEN SAL
+                            ELSE SAL*1.03
+                            END AS UPSAL 
+FROM emp;
+
+SELECT empno,ename,job,sal, CASE
+                            WHEN COMM IS NULL THEN '해당사항없음'
+                            WHEN COMM=0 THEN '수당없음'
+                            WHEN COMM>0 THEN '수당 : ' || COMM
+                            END AS COMM_TEXT FROM emp;
