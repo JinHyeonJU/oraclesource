@@ -133,5 +133,18 @@ SELECT LENGTH('웅뇽뇽뇽'), LENGTHB('웅뇽뇽뇽') FROM DUAL;
 -- 직책 이름이 6글자 이상인 사원들의 정보 추출
 SELECT * FROM emp WHERE LENGTH(job) >= 6;
 
--- 문자열 함수 : SUBSTR(테이블, a, b) a번째 글자부터 b번째 글자 출력
+-- 1) 문자열 함수 : SUBSTR(테이블, a, b) a번째 글자부터 b번째 글자 출력
 SELECT job, SUBSTR(job,1,2), SUBSTR(job,3,2), substr(job,5) FROM emp;
+
+SELECT job, SUBSTR(job, -LENGTH(job)), SUBSTR(job, -LENGTH(job),2),SUBSTR(job, -3)
+FROM emp;
+
+-- 2) 문자열 함수 : INSTR(특정문자 위치 찾기)
+-- ('HELLO, ORACLE!', 'L', 5)5번째 문자이후의 l찾기
+-- ('HELLO, ORACLE!', 'L', 2, 2) 2번째 이후 & 2번째 L위치 찾기
+SELECT INSTR('HELLO, ORACLE!', 'L') AS INSTR_1,
+       INSTR('HELLO, ORACLE!', 'L', 5) AS INSTR_2,
+       INSTR('HELLO, ORACLE!', 'L', 2, 2) AS INSTR_3
+       FROM dual;
+       
+-- 3) 문자열 함수 : REPLACE(찾아서 바꾸기), 원본수정X 화면출력만변경
