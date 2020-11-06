@@ -194,3 +194,39 @@ SELECT last_name, salary,
                          0.45) AS TAX_RATE
 FROM employees
 WHERE department_id=80;
+
+
+/* 다중행 함수연습
+회사 내의 최대 연봉 및 최소 연봉 차이를 조회*/
+SELECT MAX(salary) - MIN(salary) AS salary FROM employees;
+/* 매니저로 근무하는 사원들의 인원수 조회*/
+SELECT COUNT(DISTINCT manager_id) AS 매니저 FROM employees;
+
+/* GROUP BT 연습
+부서별 직원의 수를 구하여 부서번호의 오름차순으로 출력*/
+SELECT department_id, COUNT(employee_id) FROM employees
+GROUP BY department_id
+ORDER BY department_id;
+
+/*부셔벌 급여의 평균 연봉을 출력하고, 평균연봉은 정수만 나오도록 한다.
+부서변호별 오름차순으로 정렬*/
+SELECT department_id, ROUND(AVG(salary), 0) AS salary FROM employees
+GROUP BY department_id
+ORDER BY department_id;
+
+/*동일한 직업을 가진 사원수를 조회*/
+SELECT job_id, COUNT(employee_id)
+FROM employees
+GROUP BY job_id;
+
+
+
+
+
+
+
+
+
+SELECT * FROM employees;
+
+

@@ -293,6 +293,7 @@ SELECT empno,ename,job,sal, CASE
                             WHEN COMM>0 THEN '수당 : ' || COMM
                             END AS COMM_TEXT FROM emp;
 
+
 -- [실습1] : 월평균 근무일수 21.5, DAY_PAY(하루급여) : SAL/21.5,
 -- TIME_PAY(시급) : SAL/21.5/8
 --SELECT ROUND((sal/21.5),2) ROUND도 사용가능
