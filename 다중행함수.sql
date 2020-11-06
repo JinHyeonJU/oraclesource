@@ -41,6 +41,33 @@ HAVING과 GROUP BY는 세트, HAVING 단독으로 사용 불가
 각 부서의 직책별 평균 급여를 구하되 그 평균 급여가 2000이상인 그룹만출력*/
 SELECT deptno, job, AVG(sal)
 FROM emp
+GROUP BY deptno, job
 HAVING AVG(sal) >= 2000
 ORDER BY deptno;
-GROUP BY deptno, job
+
+/* EMP 테이블의 부서별 직책의 평균 급여가 500이상인 사원들의
+부서번호, 직책, 부서별 직책의 평균 급여 출력*/
+SELECT deptno, job, AVG(sal)
+FROM emp
+GROUP BY deptno, job HAVING AVG(sal) >= 500
+ORDER BY deptno, job;
+
+SELECT deptno, job, AVG(sal)
+FROM emp
+WHERE sal<=3000
+GROUP BY deptno, job HAVING AVG(sal) >=2000 -- GROUP BY, HAVING은 마지막에 실행
+ORDER BY deptno, job;
+
+/* [실습1] */
+SELECT deptno, FLOOR(AVG(sal)) AS AVG_SAL, MAX(sal) AS MAX_SAL,
+MIN(sal) AS MIN_SAL, COUNT(deptno)
+FROM emp
+GROUP BY deptno;
+/* [실습2] */
+SELECT JOB, COUNT(job/* '*' 도 무관*/) FROM emp
+GROUP BY job HAVING COUNT(job) >= 3;
+/* [실습3] */
+SELECT TO_CHAR(hiredate, 'yyyy') AS HIRE_YEAR, DEPTNO, COUNT(*) AS CNT
+FROM emp
+GROUP BY deptno, TO_CHAR(hiredate, 'yyyy')
+ORDER BY TO_CHAR(hiredate, 'yyyy');
