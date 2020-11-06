@@ -219,14 +219,42 @@ SELECT job_id, COUNT(employee_id)
 FROM employees
 GROUP BY job_id;
 
+SELECT * FROM tab;
+SELECT * FROM EMPLOYEES;
+SELECT * FROM LOCATIONS;
+/* [JOIN 실습]
+자신의 담당 매니저의 고용일보다 빠른 입사자를 찾아 HIRE_DATE,LAST_NAME,
+MANAGER_ID를 출력(EMPLOYEES SELF JOIN, MANAGER_ID 조인) */
+SELECT E1.HIRE_DATE, E1.LAST_NAME, E1.MANAGER_ID
+FROM employees E1, employees E2
+WHERE E1.manager_id = E2.manager_id;
+
+/* 도시 이름이 T로 시작하는 지역에 사는 사원들의 사번, LAST_NAME, 부서번호 조회
+(EMPLOYEES의 DEPARTMENT_ID와 DEPARTMENT의 DEPARTMENT_ID 연결 후
+DEPARTMENTS 의 LOCATION_ID와 LOCATIONS의 LOCATION_ID 조인) */
+SELECT 
+FROM employees E,department D, locations L
+WHERE E.department_id JOIN D.department_id ON E.department_id = D.department_id
+AND 
+
+/* 위치 ID가 1700로 동일한 사원들의 EMPLOYEE_ID, LAST_NAME, DEPARTMENT_ID, SALARY 조회
+(EMPLOYEES 와 DEPARTMENTS 조인)*/
 
 
+/* DEPARTMENT_NAME, LOCATION_ID, 각 부서별 사원수, 각 부서별 평균 연봉 조회
+(EMPLOYEES, DEPARTMENT 조인) */
 
 
+/* EXECUTIVE 부서에 근무하는 모든 사원들의 DEPARTMENT_ID, LAST_NAME, JOB_ID 조회
+(EMPLOYEES, DEPARTMENT 조인) */
 
 
+/* 기존의 직업을 여전히 가지고 있는 사원들의 사번 및 JOB_ID 조회
+(EMPLOYEES,JOB_HISTORY 조인) */
 
 
-SELECT * FROM employees;
+/* 각 사원별 소속 부서에서 자신보다 늦게 고용되었으나 보다 많은 연봉을 받는
+사원이 존재하는 모든 사원들의 LAST_NAME 조회
+(EMPLOYEES SELF JOIN)*/
 
 
