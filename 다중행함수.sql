@@ -148,7 +148,7 @@ FROM EMP E1, EMP E2
 WHERE E1.MGR = E2.EMPNO(+);
 /* 3.2) RIGHT OUTER JOIN 표준방식 */
 SELECT E1.EMPNO, E1.ENAME, E1.MGR, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
-FROM EMP E1 RIGHT OUTER JOIN EMP E2 -- 방향은 ON의 = 기준으로 왼쪽, 오른쪾
+FROM EMP E1 RIGHT OUTER JOIN EMP E2 -- 방향은 ON의 OUTHER JOIN 기준으로 왼쪽, 오른쪾
 ON E1.MGR = E2.EMPNO;
 /* 3.2) RIGHT OUTER JOIN */
 SELECT E1.EMPNO, E1.ENAME, E1.MGR, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
@@ -156,31 +156,56 @@ FROM EMP E1, EMP E2
 WHERE E1.MGR(+) = E2.EMPNO;
 
 SELECT * FROM emp;
-/* [실습1] JOIN */
-SELECT D.deptno, D.dname, E.empno, E.ename, E.sal
+/* [JOIN 실습1] */
+SELECT E.deptno, D.dname, E.empno, E.ename, E.sal
 FROM EMP E, DEPT D
-WHERE E.deptno = D.deptno AND E.sal > 2000;
-
-SELECT D.deptno, D.dname, E.empno, E.ename, E.sal
+WHERE E.deptno = D.deptno AND E.sal > 2000 ORDER BY E.deptno;
+-- 밑에는 표준 JOIN ON 방식
+SELECT E.deptno, D.dname, E.empno, E.ename, E.sal
 FROM EMP E JOIN DEPT D
 ON E.deptno = D.deptno
-WHERE E.sal > 2000;
-/* [실습2] GROUP BY*/
-SELECT
-FROM
-ON
-
-/* [실습3] */
-SELECT D.deptno, D.dname, E.empno, E.ename, E.job, E.sal
-FROM EMP E FULL OUTER JOIN DEPT D
+WHERE E.sal > 2000 ORDER BY E.deptno;
+/* [JOIN 실습2] GROUP BY*/
+SELECT D.deptno, D.dname, ROUND(AVG(E.SAL), 0) AS AVG_SAL, MAX(E.SAL) AS MAX_SAL,
+MIN(E.SAL) AS MIN_SAL, COUNT(E.deptno) AS CNT
+FROM emp E, dept D
+WHERE E.deptno = D.deptno
+GROUP BY D.deptno, D.dname;
+-- 밑에는 표준 JOIN ON 방식
+SELECT D.deptno, D.dname, FLOOR(AVG(E.SAL)) AS AVG_SAL, MAX(E.SAL) AS MAX_SAL,
+MIN(E.SAL) AS MIN_SAL, COUNT(E.deptno) AS CNT
+FROM emp E JOIN dept D
 ON E.deptno = D.deptno
-ORDER BY D.deptno, D.dname;
+GROUP BY D.deptno, D.dname;
 
-/* [실습4] */
-SELECT
-FROM
-ON
-WHERE
+/* [JOIN 실습3] */
+SELECT D.deptno, D.dname, E.empno, E.ename, E.job, E.sal
+FROM EMP E RIGHT OUTER JOIN DEPT D ON E.deptno = D.deptno
+ORDER BY D.deptno, E.EMPNO;
+
+/* [JOIN 실습4] */
+SELECT D1.DEPTNO, D1.DNAME, E1.EMPNO, E1.ENAME, E1.MGR, E1.SAL, E1.DEPTNO,
+S.LOSAL, S.HISAL, S.GRADE, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
+FROM EMP E1
+RIGHT OUTER JOIN DEPT D1 ON E1.DEPTNO = D1.DEPTNO
+LEFT OUTER JOIN SALGRADE S ON E1.SAL BETWEEN S.LOSAL AND S.HISAL
+LEFT OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO
+ORDER BY D1.deptno, E1.empno;
+-- 2번째 방법
+SELECT D1.DEPTNO, D1.DNAME, E1.EMPNO, E1.ENAME, E1.MGR, E1.SAL, E1.DEPTNO,
+S.LOSAL, S.HISAL, S.GRADE, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
+FROM EMP E1, DEPT D1, SALGRADE S, EMP E2
+WHERE E1.DEPTNO(+) = D1.DEPTNO AND E1.SAL BETWEEN S.LOSAL(+) AND
+S.HISAL(+) AND E1.MGR = E2.EMPNO(+)
+ORDER BY D1.DEPTNO, E1.empno;
+
+
+
+
+
+
+
+
 
 
 
