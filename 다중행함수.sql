@@ -71,3 +71,46 @@ SELECT TO_CHAR(hiredate, 'yyyy') AS HIRE_YEAR, DEPTNO, COUNT(*) AS CNT
 FROM emp
 GROUP BY deptno, TO_CHAR(hiredate, 'yyyy')
 ORDER BY TO_CHAR(hiredate, 'yyyy');
+
+/* ★●조인(JOIN)●
+나올 수 있는 모든 조합 */
+SELECT * FROM emp, dept; ORDER BY empno;
+SELECT COUNT(*) FROM emp, dept; ORDER BY empno; --56행(14 * 4)
+SELECT * FROM dept; --4행
+SELECT * FROM emp; --14행
+/* 1) 내부조인(등가조인) */
+SELECT *
+FROM emp, dept
+WHERE emp.deptno = dept.deptno --JOIN기준
+ORDER BY empno;
+
+SELECT *
+FROM emp E, dept D
+WHERE E.deptno = D.deptno --JOIN기준
+ORDER BY empno;
+
+SELECT *
+FROM emp E INNER JOIN dept D
+ON E.deptno = D.DEPTNO -- ON : JOIN기준
+ORDER BY empno;
+/* 두 테이블에 같은 이름의 필드가 존재하는 경우 
+어느 테이블에 있는 필드를 가지고 올 것인지 정확히 명시 */
+SELECT empno, ename, job, D.deptno, dname -- 어느테이블의 deptno를 가져올것인지
+FROM EMP E INNER JOIN DEPT D
+ON E.deptno = D.deptno
+ORDER BY empno;
+
+/* EMP테이블과 DEPT테이블을 조인하여 EMPNO, ENAME, SAL, DEPTNO, DNAME, LOC를 조회한다.
+단 급여가 3000 이상인 사원만 출력 */
+SELECT E.empno, E.ename, E.sal, D.deptno, D.dname, D.loc
+FROM emp E, dept D
+WHERE  E.DEPTNO = D.DEPTNO AND SAL >= 3000;-- JOIN조건
+
+
+
+
+
+
+
+
+
