@@ -292,3 +292,27 @@ SELECT empno,ename,job,sal, CASE
                             WHEN COMM=0 THEN '수당없음'
                             WHEN COMM>0 THEN '수당 : ' || COMM
                             END AS COMM_TEXT FROM emp;
+
+-- [실습1] : 월평균 근무일수 21.5, DAY_PAY(하루급여) : SAL/21.5,
+-- TIME_PAY(시급) : SAL/21.5/8
+--SELECT ROUND((sal/21.5),2) ROUND도 사용가능
+SELECT empno, ename, sal, TRUNC(sal/21.5, 2) AS DAY_PAY, 
+ROUND((sal/21.5/8),1) as TIME_PAY
+FROM emp;
+
+-- [실습2]
+SELECT empno, ename, hiredate, NEXT_DAY(ADD_MONTHS(hiredate, 3), '월요일') AS R_JOB,
+       NVL(TO_CHAR(COMM), 'N/A') AS COMM
+FROM emp;
+
+-- [실습3]
+-- 다른방법 SELECT SUBSTR(TO_CHAR(mgr),1,2) FROM emp;
+SELECT empno, ename, mgr, CASE WHEN MGR IS NULL THEN '0000'
+                               WHEN MGR LIKE '75%' THEN '5555'
+                               WHEN MGR LIKE '76%' THEN '6666'
+                               WHEN MGR LIKE '77%' THEN '7777'
+                               WHEN MGR LIKE '78%' THEN '8888'
+                               ELSE TO_CHAR(MGR)
+                               END AS CHG_MGR
+FROM emp;
+

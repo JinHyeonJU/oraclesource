@@ -153,3 +153,44 @@ WHERE job_id IN('AD_PRES', 'PU_CLERK');
 SELECT employee_id, department_id, job_id, first_name || ' ' || last_name AS FullName
 FROM employees
 WHERE job_id IN('AD_PRES', 'PU_CLERK');
+
+
+-- [실습4]
+SELECT LAST_NAME, SALARY, CASE
+                              WHEN salary BETWEEN 0 AND 1999 THEN salary*0
+                              WHEN salary BETWEEN 2000 AND 3999 THEN 0.09
+                              WHEN salary BETWEEN 4000 AND 5999 THEN 0.2
+                              WHEN salary BETWEEN 6000 AND 7999 THEN 0.3
+                              WHEN salary BETWEEN 8000 AND 9999 THEN 0.4
+                              WHEN salary BETWEEN 10000 AND 11999 THEN 0.42
+                              WHEN salary BETWEEN 12000 AND 13999 THEN 0.44
+                              WHEN salary >14000 THEN 0.6
+                                      END AS TAX_RATE
+FROM employees;
+-- < 기호사용한 CASE문
+SELECT last_name, salary,
+          CASE
+               WHEN salary < 2000 THEN 0
+               WHEN (salary < 4000) THEN 0.09
+               WHEN (salary < 6000) THEN 0.2
+               WHEN (salary < 8000) THEN 0.3
+               WHEN (salary < 10000) THEN 0.4
+               WHEN (salary < 12000) THEN 0.42
+               WHEN (salary < 14000) THEN 0.44
+               ELSE 0.45
+               END AS TAX_RATE
+FROM employees
+WHERE department_id=80;
+-- TRUNC 사용한 DECODE문
+SELECT last_name, salary,
+               DECODE(TRUNC(salary/2000,0),
+                         0,0.00,
+                         1,0.09,
+                         2,0.20,
+                         3,0.30,
+                         4,0.40,
+                         5,0.42,
+                         6,0.44,
+                         0.45) AS TAX_RATE
+FROM employees
+WHERE department_id=80;
