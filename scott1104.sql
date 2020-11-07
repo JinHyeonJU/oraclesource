@@ -317,3 +317,7 @@ SELECT empno, ename, mgr, CASE WHEN MGR IS NULL THEN '0000'
                                END AS CHG_MGR
 FROM emp;
 
+/* [½Ç½À2] */
+SELECT job, COUNT(job)
+FROM emp
+GROUP BY job HAVING COUNT(job) >= 3;
