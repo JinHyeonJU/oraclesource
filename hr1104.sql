@@ -235,7 +235,7 @@ DEPARTMENTS 의 LOCATION_ID와 LOCATIONS의 LOCATION_ID 조인) */
 SELECT 
 FROM employees E,department D, locations L
 WHERE E.department_id JOIN D.department_id ON E.department_id = D.department_id
-AND 
+
 
 /* 위치 ID가 1700로 동일한 사원들의 EMPLOYEE_ID, LAST_NAME, DEPARTMENT_ID, SALARY 조회
 (EMPLOYEES 와 DEPARTMENTS 조인)*/
