@@ -1,0 +1,49 @@
+/* [count] */
+
+SELECT * FROM tab;
+SELECT * FROM emp;
+select * from salgrade;
+
+SELECT COUNT(empno) FROM emp;
+SELECT MIN(MGR) FROM EMP;
+SELECT AVG(MGR) FROM EMP;
+
+SELECT JOB, COUNT(*) FROM emp GROUP BY JOB;
+
+select deptno, trunc(avg(sal)) as avg_sal, max(sal) as max_sal, min(sal) as min_sal, count(empno) from emp group by deptno;
+
+select to_char(hiredate, 'yyyy'), deptno, count(*) from emp group by to_char(hiredate, 'yyyy'),deptno;
+
+/* [조인 실습연습] */
+
+select E.empn, o, e.ename,e.job, e.sal, e.comm, e.deptno, s.grade
+from emp E join salgrade s on e.sal between losal and hisal;
+
+select E.empno, e.ename,e.job, e.sal, e.comm, e.deptno, s.grade
+from emp E, salgrade S where e.sal between losal and hisal;
+
+/* EMPNO, MGR을 셀프조인하여서 자신을 담당하고있는 매니저가 누구인지 출력하시오 */
+
+SELECT E1.ENAME, E1.EMPNO, E1.MGR, E2.ENAME AS E2_ENAME
+FROM EMP E1 FULL OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO;
+
+/* [JOIN실습]
+급여가 2000초과인 사원들의 부서 정보, 사원 정보를 출력하시오.
+DEPTNO, DNAME, EMPNO, ENAME, SAL */
+
+SELECT E.DEPTNO, D.DNAME, E.EMPNO, E.ENAME, E.SAL FROM EMP E JOIN DEPT D ON E.DEPTNO = D. DEPTNO
+WHERE E.SAL>2000;
+
+SELECT D.DEPTNO, D.DNAME, E.EMPNO, E.ENAME, E.JOB, E.SAL FROM EMP E RIGHT OUTER JOIN DEPT D ON E.DEPTNO = D.DEPTNO;
+
+SELECT D.DEPTNO, D.DNAME, E1.EMPNO, E1.ENAME, E1.MGR,E1.SAL, E2.DEPTNO AS DEPNO_1,S.LOSAL, S.HISAL,S.GRADE, E2.EMPNO AS MGR_EMPNO,E2.ENAME AS MGR_ENAME
+FROM EMP E1, EMP E2, SALGRADE S, DEPT D WHERE E1.DEPTNO = D.DEPTNO AND E1.SAL BETWEEN S.LOSAL AND S.HISAL AND E1.MGR = E2.EMPNO ORDER BY D.DEPTNO, E1.EMPNO;
+
+SELECT D.DEPTNO, D.DNAME, E1.EMPNO, E1.ENAME, E1.MGR,E1.SAL, E1.DEPTNO AS DEPTNO_1 ,S.LOSAL, S.HISAL,S.GRADE, E2.EMPNO AS MGR_EMPNO,E2.ENAME AS MGR_ENAME
+FROM EMP E1 RIGHT OUTER JOIN DEPT D ON E1.DEPTNO = D.DEPTNO 
+LEFT OUTER JOIN SALGRADE S ON E1.SAL BETWEEN S.LOSAL AND S.HISAL
+LEFT OUTER JOIN EMP E2 ON E1.MGR = E2.EMPNO
+ORDER BY D.DEPTNO, E1.EMPNO;
+SELECT D.DEPTNO, D.DNAME, E1.EMPNO, E1.ENAME, E1.MGR,E1.SAL,E2.DEPNO_1,S.LOSAL, S.HISAL,S.GRADE, E2.MGR_EMPNO,E2.MGR_ENAME
+FROM EMP E1 JOIN DEPT D ON E1.DEPTNO = D.DEPTNO 
+

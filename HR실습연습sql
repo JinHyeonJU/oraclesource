@@ -1,0 +1,15 @@
+select * from employees;
+/* GROUP BY 연습
+부서별 직원의 수를 구하여 부서번호의 오름차순으로 출력*/
+select department_id, count(*) from employees group by department_id order by department_id;
+
+/*부셔벌 급여의 평균 연봉을 출력하고, 평균연봉은 정수만 나오도록 한다.
+부서변호별 오름차순으로 정렬*/
+
+select department_id,  trunc(avg(salary)) from employees group by department_id order by department_id;
+
+
+/*동일한 직업을 가진 사원수를 조회*/
+select job_id,count(*) from employees group by job_id;
+
+SELECT 

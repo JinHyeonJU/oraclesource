@@ -202,7 +202,7 @@ SELECT MAX(salary) - MIN(salary) AS salary FROM employees;
 /* 매니저로 근무하는 사원들의 인원수 조회*/
 SELECT COUNT(DISTINCT manager_id) AS 매니저 FROM employees;
 
-/* GROUP BT 연습
+/* GROUP BY 연습
 부서별 직원의 수를 구하여 부서번호의 오름차순으로 출력*/
 SELECT department_id, COUNT(employee_id) FROM employees
 GROUP BY department_id
@@ -225,36 +225,78 @@ SELECT * FROM LOCATIONS;
 /* [JOIN 실습]
 자신의 담당 매니저의 고용일보다 빠른 입사자를 찾아 HIRE_DATE,LAST_NAME,
 MANAGER_ID를 출력(EMPLOYEES SELF JOIN, MANAGER_ID 조인) */
-SELECT E1.HIRE_DATE, E1.LAST_NAME, E1.MANAGER_ID
-FROM employees E1, employees E2
-WHERE E1.manager_id = E2.manager_id;
+SELECT E1.LAST_NAME, E1.HIRE_DATE AS 내입사일
+E1.MANAGER_ID, E2.HIRE_DATE
+FROM EMPLOYEES E1 JOIN EMPLOYEES E2 ON E1.MANAGER_ID = E2.EMPLOYEE_ID
+WHERE E1.HIRE_DATE < E2.HIRE_DATE;
 
+SELECT E1.HIRE_DATE, E1.LAST_NAME, E1.HIRE_DATE AS 내입사일,
+E1.MANAGER_ID, E2.HIRE_DATE AS 매니저입사일
+FROM employees E1, employees E2
+WHERE e1.manager_id = e2.employee_id AND E1.hire_date < E2.hire_date;
+
+SELECT * FROM EMPLOYEES;
+SELECT * FROM LOCATIONS;
 /* 도시 이름이 T로 시작하는 지역에 사는 사원들의 사번, LAST_NAME, 부서번호 조회
 (EMPLOYEES의 DEPARTMENT_ID와 DEPARTMENT의 DEPARTMENT_ID 연결 후
 DEPARTMENTS 의 LOCATION_ID와 LOCATIONS의 LOCATION_ID 조인) */
-SELECT 
-FROM employees E,department D, locations L
-WHERE E.department_id JOIN D.department_id ON E.department_id = D.department_id
+SELECT * FROM TAB;
+SELECT * FROM DEPARTMENTS;
 
+SELECT * FROM locations;/* 도시이름은 locations 테이블의 city */ 
+SELECT * FROM employees;
+select E1.employee_id, E1.last_name, E1.department_id, L.CITY
+from departments D  join employees E1 on e1.department_id = d.department_id
+JOIN LOCATIONS L ON D.LOCATION_ID = L.LOCATION_ID
+WHERE L.CITY LIKE('T%');
+
+SELECT E.employee_id, E.LAST_NAME, E.department_id, l.city
+FROM DEPARTMENTS D FULL OUTER JOIN EMPLOYEES E ON E.department_id = D.department_id
+     FULL OUTER JOIN LOCATIONS L ON D.location_id = L.location_id
+WHERE L.CITY LIKE ('T%');
 
 /* 위치 ID가 1700로 동일한 사원들의 EMPLOYEE_ID, LAST_NAME, DEPARTMENT_ID, SALARY 조회
 (EMPLOYEES 와 DEPARTMENTS 조인)*/
+select e.EMPLOYEE_ID, e.LAST_NAME, e.DEPARTMENT_ID, e.SALARY, D.location_id
+from employees e join departments d on e.department_id = d.department_id
+where D.location_id = 1700;
 
+SELECT * FROM departments;
 
 /* DEPARTMENT_NAME, LOCATION_ID, 각 부서별 사원수, 각 부서별 평균 연봉 조회
 (EMPLOYEES, DEPARTMENT 조인) */
-
-
+SELECT D.department_name, D.location_id, COUNT(E.department_id) AS CNT, ROUND(AVG(E.salary)) AS AVG_sal
+FROM employees E JOIN DEPARTMENTS D
+ON E.department_id = D.department_id
+GROUP BY D.department_name, D.location_id;
+SELECT * FROM departments;
 /* EXECUTIVE 부서에 근무하는 모든 사원들의 DEPARTMENT_ID, LAST_NAME, JOB_ID 조회
 (EMPLOYEES, DEPARTMENT 조인) */
 
 
+
+select e.DEPARTMENT_ID, e.LAST_NAME, e.JOB_ID, D.department_name
+from employees e FULL OUTER join departments d on e.department_id = d.department_id
+where d.department_name = 'Executive';
+
+
+
 /* 기존의 직업을 여전히 가지고 있는 사원들의 사번 및 JOB_ID 조회
 (EMPLOYEES,JOB_HISTORY 조인) */
-
-
+SELECT E.EMPLOYEE_ID, E.JOB_ID, J.JOB_ID
+FROM EMPLOYEES E JOIN JOB_HISTORY J ON E.EMPLOYEE_ID = J.EMPLOYEE_ID
+WHERE E.JOB_ID = J.JOB_ID;
+SELECT * FROM TAB;
+SELECT * FROM EMPLOYEES;
+SELECT * FROM JOB_HISTORY;
 /* 각 사원별 소속 부서에서 자신보다 늦게 고용되었으나 보다 많은 연봉을 받는
 사원이 존재하는 모든 사원들의 LAST_NAME 조회
 (EMPLOYEES SELF JOIN)*/
+
+SELECT DISTINCT E1.LAST_NAME FROM EMPLOYEES E1 JOIN EMPLOYEES E2 ON E1.DEPARTMENT_ID = E2.DEPARTMENT_ID
+WHERE E1.SALARY > E2.SALARY AND E1.HIRE_DATE > E2.HIRE_DATE;
+
+
+
 
 

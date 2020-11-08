@@ -33,8 +33,8 @@ GROUP BY deptno, job;
 
 /* group by 절에 포함 안되는 열을 select에 포함하면 안됨*/
 SELECT deptno, AVG(sal)
-FROM emp
-GROUP BY deptno;
+FROM emp;
+--GROUP BY deptno;
 
 /* ●HAVING : GROUP BY 절에 조건을 줄 때 사용●
 HAVING과 GROUP BY는 세트, HAVING 단독으로 사용 불가
@@ -74,8 +74,13 @@ ORDER BY TO_CHAR(hiredate, 'yyyy');
 
 /* ★●조인(JOIN)●
 나올 수 있는 모든 조합 */
+SELECT * FROM tab;
+SELECT * FROM emp;
+SELECT * FROM dept;
+
+
 SELECT * FROM emp, dept; ORDER BY empno;
-SELECT COUNT(*) FROM emp, dept; ORDER BY empno; --56행(14 * 4)
+SELECT COUNT(*) FROM emp, dept ORDER BY empno; --56행(14 * 4)
 SELECT * FROM dept; --4행
 SELECT * FROM emp; --14행
 /* 1) 내부조인(등가조인) */
@@ -140,7 +145,7 @@ ON E1.MGR = E2.EMPNO;
 /* 3) 외부조인(OUTER JOIN) : 조건을 만족하지 않는 데이터 추출 */
 /* 3.1)LEFT OUTER JOIN 표준방식 */
 SELECT E1.EMPNO, E1.ENAME, E1.MGR, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
-FROM EMP E1 LEFT OUTER JOIN EMP E2 -- 방향은 ON의 = 기준으로 왼쪽, 오른쪾
+FROM EMP E1 LEFT OUTER JOIN EMP E2 -- 방향은 FROM테이블 OUTER JOIN 테이블 기준으로 왼쪽, 오른쪾
 ON E1.MGR = E2.EMPNO;
 /* 3.1)LEFT OUTER JOIN */
 SELECT E1.EMPNO, E1.ENAME, E1.MGR, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
@@ -153,7 +158,8 @@ ON E1.MGR = E2.EMPNO;
 /* 3.2) RIGHT OUTER JOIN */
 SELECT E1.EMPNO, E1.ENAME, E1.MGR, E2.EMPNO AS MGR_EMPNO, E2.ENAME AS MGR_ENAME
 FROM EMP E1, EMP E2
-WHERE E1.MGR(+) = E2.EMPNO;
+WHERE E1.MGR = E2.EMPNO(+);
+select * from emp;
 
 SELECT * FROM emp;
 /* [JOIN 실습1] */
