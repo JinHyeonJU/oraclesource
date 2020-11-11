@@ -226,7 +226,7 @@ SELECT * FROM LOCATIONS;
 자신의 담당 매니저의 고용일보다 빠른 입사자를 찾아 HIRE_DATE,LAST_NAME,
 MANAGER_ID를 출력(EMPLOYEES SELF JOIN, MANAGER_ID 조인) */
 SELECT E1.LAST_NAME, E1.HIRE_DATE AS 내입사일
-E1.MANAGER_ID, E2.HIRE_DATE
+E1.MANAGER_ID, E2.HIRE_DATE as 매니저입사일
 FROM EMPLOYEES E1 JOIN EMPLOYEES E2 ON E1.MANAGER_ID = E2.EMPLOYEE_ID
 WHERE E1.HIRE_DATE < E2.HIRE_DATE;
 
@@ -265,7 +265,7 @@ SELECT * FROM departments;
 
 /* DEPARTMENT_NAME, LOCATION_ID, 각 부서별 사원수, 각 부서별 평균 연봉 조회
 (EMPLOYEES, DEPARTMENT 조인) */
-SELECT D.department_name, D.location_id, COUNT(E.department_id) AS CNT, ROUND(AVG(E.salary)) AS AVG_sal
+SELECT D.department_name, D.location_id, COUNT(E.department_id) AS CNT, ROUND(AVG(E.salary),2) AS AVG_sal
 FROM employees E JOIN DEPARTMENTS D
 ON E.department_id = D.department_id
 GROUP BY D.department_name, D.location_id;
@@ -297,6 +297,32 @@ SELECT DISTINCT E1.LAST_NAME FROM EMPLOYEES E1 JOIN EMPLOYEES E2 ON E1.DEPARTMEN
 WHERE E1.SALARY > E2.SALARY AND E1.HIRE_DATE > E2.HIRE_DATE;
 
 
+--서브 쿼리실습
 
+--회사 전체 평균  연봉보다  더 많이 받는 사원들의 last_name,  salary 조회
+select last_name, salary from employees where salary > (select avg(salary) from employees);
+-- last_name에 u가 포함되는 사원들과 동일 부서에 근무하는  사원들의  employee_id, last_name 조회
+select employee_id, last_name from employees where department_id in(select distinct  department_id from employees where last_name like('%u%') OR last_name like('U%'));
+--not exists 연산자를  사용하여 매니저가 아닌 사원 이름을 조회
+select first_name || ' ' || last_name from employees e1 where not exists (select distinct  manager_id  
+                                                                          from employees e2 
+                                                                          where e1.employee_id = e2.manager_id);
+select first_name || ' ' || last_name from employees e1 where e1.employee_id  not in (select distinct  manager_id  
+                                                                          from employees e2 
+                                                                          where e1.employee_id = e2.manager_id); 
 
+DROP INDEX INDEXTBL;
+-- 인덱스 확인
+CREATE TABLE INDEXTBL AS
+SELECT DISTINCT FIRST_NAME, LAST_NAME, HIRE_DATE FROM EMPLOYEES;
 
+SELECT * FROM INDEXTBL WHERE FIRST_NAME = 'JACK';
+
+-- 데이터베이스에서 검색의 향상 떄문에 INDEX 사용
+--인덱스 사용 여부에 따라 테이블 검색 방식을
+-- TABLE FULL SCAN, INDEX 으로 구분
+
+CREATE INDEX IDEX_INDEXTBL_FIRSTNAME ON INDEXTBL(FIRST_NAME);
+
+-- 인덱스 삭제
+DROP INDEX IDEX_INDEXTBL_FIRSTNAME;
